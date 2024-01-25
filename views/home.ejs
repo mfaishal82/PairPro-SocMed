@@ -19,9 +19,18 @@
                 </div>
                 <div>
                     <input type="text" name="imgUrl" placeholder="image url">
+                    <select name="TagId" id="">
+                        <option value="" disabled selected>Select Tag</option>
+                        <% tags.forEach(el => { %>
+                         <option value="<%= el.id %>"><%= el.name %></option>
+                        <% }) %>
+                    </select>
                 </div>
                 <div>
                     <textarea name="content" cols="80" rows="3" placeholder="write description here..."></textarea>
+                </div>
+                <div>
+                    
                 </div>
                 <div>
                     <button type="submit">Post</button>
@@ -79,7 +88,7 @@
                     <span>( Release : <%= el.formatLocalDate %> )</span>
                 </div>
                 <p><%= el.content %></p>
-                <p class="hastag">#Indonesia Maju</p>
+                <p class="hastag"></p>
             </div>
             <% }) %>
             <% } %>

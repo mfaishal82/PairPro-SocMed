@@ -201,3 +201,25 @@ body {
     color: black;
     font-weight: bold;
 }
+
+.container .post .card-post .hastag {
+    color: black;
+    font-weight: bold;
+    font-style: italic;
+}
+
+.container .post .card-post form select {
+    border-radius: 5px;
+}
+
+.container .post .card-post form button {
+    padding: 3px;
+    box-sizing: border-box;
+    border-radius: 5px;
+}
+
+.container .post .card-post form button:hover {
+    background-color: lightskyblue;
+    scale: 1.1;
+    cursor: pointer;
+}

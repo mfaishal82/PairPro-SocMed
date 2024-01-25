@@ -1,4 +1,5 @@
-const { User, Post, Profile, Tag , TagPost} = require('../models')
+const { User, Post, Profile, Tag, TagPost} = require('../models')
+
 const bcrypt = require('bcryptjs')
 const { Op } = require("sequelize");
 
@@ -68,23 +69,45 @@ class UserController {
     static async home(req, res) {
         const UserId = req.session.UserId
         const {error} = req.query;
-
         try {
             const userData = await User.findByPk(UserId)
+            const tags = await Tag.findAll()
+            // console.log(tags)
             const profileData = await Profile.findOne({
                 where: {
                     UserId
                 }
             })
-
+            
             const posts = await Post.findAll({
                 order: [["id", "DESC"]],
                 include:{
                     model: User
-                }
+                },
             });
 
-            res.render('home', {UserId, posts, error, userData, profileData})
+            const listTagPost = await Post.findAll({
+                order: [["id", "DESC"]],
+                include:{
+                    model: TagPost,
+                    include: {
+                        model: Tag,
+                        attributes: ['name']
+                    },
+                    attributes:['id']
+                },
+                attributes: ['id']
+            });
+
+            const listTag = listTagPost.map(el => {
+                if(el.dataValues.TagPosts.length != 0){
+                    return el.dataValues.TagPosts.map(e => e.Tag.name)
+                }else{
+                    return '-'
+                }
+            })
+
+            res.render('home', {UserId, posts, error, userData, profileData, tags, listTag})
 
         } catch (error) {
             res.send(error)
@@ -107,9 +130,18 @@ class UserController {
     }
 
     static async saveNewPost(req, res) {
-        const { UserId, title, imgUrl, content } = req.body
+        const { UserId, title, imgUrl, content, TagId } = req.body
+        console.log(req.body)
         try {
-            await Post.create({ UserId, title, imgUrl, content })
+            await Post.create({ UserId, title, imgUrl, content})
+            const post = await Post.findOne({
+                where: {
+                    title: title
+                },
+                attributes: ['id']
+            })
+            await TagPost.create({TagId: TagId, PostId: post.id})
+            // console.log(post, TagId)
             res.redirect('/user/home')
         } catch (error) {
             if(error.name == 'SequelizeValidationError'){
@@ -176,6 +208,7 @@ class UserController {
 
         try {
             const name = tagName
+            // console.log(name)
             await Tag.create({name});
             res.redirect('/user/home')
         } catch (error) {
@@ -234,10 +267,21 @@ class UserController {
             if(posts.length > 0){
                 await posts.destroy();
             }
-            
+
             res.redirect('/user/dashboard')
         } catch (error) {
             res.send(error)
+        }
+    }
+
+    static async addTag(req, res) {
+        const { PostId } = req.params;
+        const { TagId } = req.body;
+        try {
+            await TagPost.create({TagId, PostId})
+            res.redirect('/user/home');
+        } catch (error) {
+            res.send(error);
         }
     }
 

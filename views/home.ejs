@@ -19,9 +19,18 @@
                 </div>
                 <div>
                     <input type="text" name="imgUrl" placeholder="image url">
+                    <select name="TagId" id="">
+                        <option value="" disabled selected>Select Tag</option>
+                        <% tags.forEach(el => { %>
+                         <option value="<%= el.id %>"><%= el.name %></option>
+                        <% }) %>
+                    </select>
                 </div>
                 <div>
                     <textarea name="content" cols="80" rows="3" placeholder="write description here..."></textarea>
+                </div>
+                <div>
+                    
                 </div>
                 <div>
                     <button type="submit">Post</button>
@@ -71,7 +80,7 @@
                 <h2>Post</h2>
             </div>
             <% if (posts.length != 0) { %>
-            <% posts.forEach(el => { %>
+            <% posts.forEach((el,i) => { %>
             <div class="card-post">
                 <img src="<%= el.imgUrl %>">
                 <h4><%= el.title %> ~ <%= el.User.username %></h4>
@@ -79,7 +88,16 @@
                     <span>( Release : <%= el.formatLocalDate %> )</span>
                 </div>
                 <p><%= el.content %></p>
-                <p class="hastag">#Indonesia Maju</p>
+                <p class="hastag"><%= listTag[i] %></p><br>
+                <form action="/user/addTag/<%= el.id %>" method="post">
+                    <select name="TagId" id="">
+                        <option value="" disabled selected>--Add Tag--</option>
+                        <% tags.forEach(el => { %>
+                         <option value="<%= el.id %>"><%= el.name %></option>
+                        <% }) %>
+                    </select>
+                    <button type="submit">Add Tag</button>
+                </form>
             </div>
             <% }) %>
             <% } %>

@@ -11,6 +11,7 @@ router.get('/register', UserController.register)
 router.post('/register', UserController.saveNewUser)
 
 router.get('/home', UserController.home)
+router.get('/profile/:id', UserController.profile)
 
 
 

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/profile.css">
+    <title>FactGuard</title>
+</head>
+<body>
+    <%- include('layout/nav-user', {name: 'greenpeace', role: 'user'}); %>
+
+    <div class="container">
+        <div class="title">
+            <h1>Edit Profile</h1>
+        </div>
+        <div class="form">
+            <form action="post">
+                <table>
+                    <tr>
+                        <td><label>First Name</label></td>
+                        <td><input type="text" name="firstName"></td>
+                    </tr>
+                    <tr>
+                        <td><label>Last Name</label></td>
+                        <td><input type="text" name="lastName"></td>
+                    </tr>
+                    <tr>
+                        <td><label>Date Of Birth</label></td>
+                        <td><input type="date" name="dateOfBirth"></td>
+                    </tr>
+                    <tr>
+                        <td><label>Hobby</label></td>
+                        <td><input type="text" name="hobby"></td>
+                    </tr>
+                    <tr>
+                        <td><label>Gender</label></td>
+                        <td><input type="text" name="gender"></td>
+                    </tr>
+                </table>
+                <div class="btn-submit">
+                    <button type="submit">Login</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

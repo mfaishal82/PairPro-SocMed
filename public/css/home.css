@@ -83,6 +83,7 @@ body {
 
 .container .form-post form textarea {
     border-radius: 5px;
+    padding: 5px;
 }
 
 .container .form-post form button {
@@ -115,6 +116,20 @@ body {
     font-weight: bold;
 }
 
+.container .profile a {
+    display: inline-block;
+    background-color: white;
+    padding: 5px;
+    margin-top: 5px;
+    border-radius: 5px;
+    color: black;
+}
+
+.container .profile a:hover {
+    background-color: lightskyblue;
+    scale: 1.1;
+}
+
 .container .post {
     grid-area: post;
     padding: 10px;
@@ -123,4 +138,9 @@ body {
 
 .container .post img {
     width: 300px;
+    border-radius: 10px;
+}
+
+.container .post span {
+    font-size: 15px;
 }

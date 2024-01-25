@@ -40,6 +40,14 @@ class UserController {
         }
     }
 
+    static async profile(req, res) {
+        try {
+            res.render('profile')
+        } catch (error) {
+            res.send(error);
+        }
+    }
+
 }
 
 module.exports = UserController;

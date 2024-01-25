@@ -1,4 +1,4 @@
-const { User } = require('../models')
+const { User, Profile } = require('../models')
 const bcrypt = require('bcryptjs')
 
 class UserController {
@@ -61,9 +61,9 @@ class UserController {
 
     static async home(req, res) {
         try {
-            let id = req.session.UserId
-            console.log(id)
-            res.render('home', {id})
+            let UserId = req.session.UserId
+            // console.log(id)
+            res.render('home', {UserId})
         } catch (error) {
             res.send(error)
         }
@@ -86,8 +86,19 @@ class UserController {
 
     static async profile(req, res) {
         try {
-            let id = req.session.UserId
-            res.render('profile', {id})
+            let UserId = req.session.UserId
+            let profile = await Profile.findOne({
+                where: {
+                    UserId
+                }
+            })
+            
+            if(!profile) {
+                res.render('profile', {UserId, profile})
+            } else {
+                res.render('profile_edit', {UserId, profile})
+            }
+            console.log(profile)
         } catch (error) {
             res.send(error)
         }
@@ -95,17 +106,31 @@ class UserController {
 
     static async saveProfile(req, res) {
         try {
-            let { firstName, lastName, dateOfBirth, hobby, gender, UserId } = req.body
-            console.log({ firstName, lastName, dateOfBirth, hobby, gender, UserId })
-            await User.create({firstName, lastName, dateOfBirth, hobby, gender, UserId}, {
-                where: {
-                    id
-                }
-            })
+            let UserId = req.session.UserId
+            let { firstName, lastName, dateOfBirth, hobby, gender, organization} = req.body
+            // console.log(req.body, UserId)
+            await Profile.create({firstName, lastName, dateOfBirth, hobby, gender, UserId, organization})
             res.redirect('/user/home')
         } catch (error) {
             res.send(error.message)
             console.log(error)
+        }
+    }
+
+    static async editProfile(req, res) {
+        try {
+            let { ProfileId } = req.params
+            let UserId = req.session.id
+            let { firstName, lastName, dateOfBirth, hobby, gender, organization} = req.body
+            await Profile.update({ firstName, lastName, dateOfBirth, hobby, gender, organization}, {
+                where: {
+                    id: ProfileId
+                }
+            })
+            console.log(req.body)
+            res.render('home', {UserId})
+        } catch (error) {
+            res.send(error)
         }
     }
 

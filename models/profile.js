@@ -13,6 +13,10 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       Profile.belongsTo(models.User)
     }
+
+    get formatDOB() {
+      return this.dateOfBirth.toLocaleDateString('en-GB').split('/').reverse().join('-')
+    }
   }
   Profile.init({
     firstName: {
@@ -40,7 +44,7 @@ module.exports = (sequelize, DataTypes) => {
       }
     },
     UserId: DataTypes.INTEGER,
-    hoby: DataTypes.STRING,
+    hobby: DataTypes.STRING,
     gender: DataTypes.STRING,
     organization: DataTypes.STRING
   }, {

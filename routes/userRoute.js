@@ -1,6 +1,5 @@
 const express = require('express');
 const router = express.Router();
-const session = require('express-session')
 
 // import controller
 const UserController = require('../controllers/UserController');
@@ -20,8 +19,9 @@ router.use(function (req, res, next) {
 })
 
 router.get('/home', UserController.home)
-router.get('/profile/:id', UserController.profile)
+router.post('/home', UserController.saveNewPost)
 router.get('/logout', UserController.logout)
+
 
 
 module.exports = router;

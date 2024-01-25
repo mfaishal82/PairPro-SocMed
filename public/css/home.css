@@ -64,6 +64,11 @@ body {
     border: 1px solid rgba(255, 255, 255, 0.66);
 }
 
+.container form span{
+    color: red;
+    font-weight: bold;
+}
+
 .container .form-post {
     grid-area: form;
     padding: 10px;
@@ -136,11 +141,42 @@ body {
     scroll-behavior: auto;
 }
 
+.container .card-post {
+    padding: 10px;
+    background: rgba(189, 182, 182, 0.73);
+    border-radius: 16px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(4.6px);
+    -webkit-backdrop-filter: blur(4.6px);
+    border: 1px solid rgba(108, 95, 95, 0.19);
+    margin-bottom: 10px;
+}
+
+.container .post .title {
+    text-align: center;
+    margin-bottom: 5px;
+}
+
+.container .post .title h2{
+    font-size: 30px;
+}
+
+.container .post .card-post h4{
+    font-size: 24px;
+}
+
 .container .post img {
     width: 300px;
     border-radius: 10px;
+    box-shadow: 3px 3px 3px white;
+}
+
+.container .post .card-post .release-date {
+    margin-bottom: 10px;
 }
 
 .container .post span {
     font-size: 15px;
+    color: black;
+    font-weight: bold;
 }

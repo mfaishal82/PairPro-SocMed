@@ -1,4 +1,4 @@
-const { User } = require('../models')
+const { User, Post } = require('../models')
 const bcrypt = require('bcryptjs')
 
 class UserController {
@@ -41,8 +41,10 @@ class UserController {
     }
 
     static async register(req, res) {
+        const {error} = req.query;
+
         try {
-            res.render('register')
+            res.render('register', {error})
         } catch (error) {
             res.send(error)
         }
@@ -55,13 +57,27 @@ class UserController {
             await User.create({ username, email, password})
             res.redirect('/user/login')
         } catch (error) {
-            res.send(error)
+            if(error.name == 'SequelizeValidationError'){
+                const msgErr = error.errors.map(err => err.message)
+                res.redirect(`/user/register?error=${msgErr}`)
+            }
         }
     }
 
     static async home(req, res) {
+        const UserId = req.session.UserId
+        const {error} = req.query;
+
         try {
-            res.render('home')
+            const posts = await Post.findAll({
+                order: [["id", "DESC"]],
+                include:{
+                    model: User
+                }
+            });
+            console.log(posts)
+            // res.send(posts)
+            res.render('home', {UserId, posts, error})
         } catch (error) {
             res.send(error)
         }
@@ -79,6 +95,21 @@ class UserController {
         } catch (error) {
             res.send(error)
 
+        }
+    }
+
+    static async saveNewPost(req, res) {
+        const { UserId, title, imgUrl, content } = req.body
+        try {
+            await Post.create({ UserId, title, imgUrl, content })
+            res.redirect('/user/home')
+        } catch (error) {
+            if(error.name == 'SequelizeValidationError'){
+                const msgErr = error.errors.map(err => err.message)
+                res.redirect(`/user/home?error=${msgErr}`)
+            }else{
+                console.log(error);
+            }
         }
     }
 

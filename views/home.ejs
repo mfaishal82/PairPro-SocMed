@@ -12,18 +12,22 @@
 
         <div class="form-post">
             <h2>Create Post</h2>
-            <form action="">
+            <form action="/user/home" method="post">
                 <div>
+                    <input type="hidden" name="UserId" value="<%= UserId %>">
                     <input type="text" name="title" placeholder="title">
                 </div>
                 <div>
-                    <input type="text" name="title" placeholder="image url">
+                    <input type="text" name="imgUrl" placeholder="image url">
                 </div>
                 <div>
-                    <textarea name="content" cols="80" rows="3"></textarea>
+                    <textarea name="content" cols="80" rows="3" placeholder="write description here..."></textarea>
                 </div>
                 <div>
                     <button type="submit">Post</button>
+                    <% if (error) { %>
+                        <span class="error"><%= error.split(',').join(' ') %></span> 
+                     <% } %>
                 </div>
             </form>
         </div>
@@ -52,12 +56,21 @@
         </div>
         
         <div class="post">
-            <div class="card-post">
-                <img src="https://www.greenpeace.org/static/planet4-indonesia-stateless/2022/11/8521332f-gp1t4huz-768x512.jpg">
-                <h4>Food Estate</h4>
-                <div><span>Release : 03-07-2023</span></div>
-                <p>Pembukaan lahan yang luas untuk program food estate mengancam wilayah masyarakat adat dan keanekaragaman hayati penting di Indonesia. Ini mungkin mencakup hingga 3,2 juta hektar lahan di Papua. Program ini tidak akan meningkatkan ketahanan pangan tetapi malah akan memperburuk krisis iklim dan keanekaragaman hayati melalui eksploitasi hutan dan lahan gambut.</p>
+            <div class="title">
+                <h2>Post</h2>
             </div>
+            <% if (posts.length != 0) { %>
+            <% posts.forEach(el => { %>
+            <div class="card-post">
+                <img src="<%= el.imgUrl %>">
+                <h4><%= el.title %> ~ <%= el.User.username %></h4>
+                <div class="release-date">
+                    <span>( Release : <%= el.formatLocalDate %> )</span>
+                </div>
+                <p><%= el.content %></p>
+            </div>
+            <% }) %>
+            <% } %>
         </div>
     </div>
 </body>

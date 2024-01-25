@@ -14,8 +14,8 @@
             <h1>Register</h1>
         </div>
         <div class="error-msg">
-            <% if (true) { %>
-                <p> Username is required, Email is required Password is required, </p>
+            <% if (error) { %>
+                <p> <%= error.split(',').join(', ') %> </p>
             <% } %>
         </div>
         <div class="form">

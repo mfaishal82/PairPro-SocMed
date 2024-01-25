@@ -1,4 +1,6 @@
 'use strict';
+const {dateLocalFormat} = require('../helper/formater')
+
 const {
   Model
 } = require('sequelize');
@@ -14,11 +16,35 @@ module.exports = (sequelize, DataTypes) => {
       Post.belongsTo(models.User)
       Post.hasMany(models.TagPost)
     }
+    get formatLocalDate(){
+      return dateLocalFormat(this.createdAt)
+    }
   }
   Post.init({
-    title: DataTypes.STRING,
-    content: DataTypes.STRING,
-    imgUrl: DataTypes.STRING,
+    title: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notNull: {msg: 'Title is require.'},
+        notEmpty: {msg: 'Title is require.'}
+      }
+    },
+    content: {
+      type: DataTypes.TEXT,
+      allowNull: false,
+      validate: {
+        notNull: {msg: 'Content is require.'},
+        notEmpty: {msg: 'Content is require.'}
+      }
+    },
+    imgUrl: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notNull: {msg: 'Image Url is require.'},
+        notEmpty: {msg: 'Image Url is require.'}
+      }
+    },
     UserId: DataTypes.INTEGER
   }, {
     sequelize,

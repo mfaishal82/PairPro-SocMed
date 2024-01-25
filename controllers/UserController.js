@@ -69,6 +69,7 @@ class UserController {
         }
     }
 
+
     static async logout(req, res) {
         try {
             req.session.destroy((err) => {
@@ -80,6 +81,7 @@ class UserController {
             })
         } catch (error) {
             res.send(error)
+
         }
     }
 

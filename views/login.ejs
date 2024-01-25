@@ -14,12 +14,12 @@
             <h1>Login</h1>
         </div>
         <div class="error-msg">
-            <% if (false) { %>
-                <p> Username is required, Email is required Password is required, </p>
+            <% if (error) { %>
+                <p> <%= error %> </p>
             <% } %>
         </div>
         <div class="form">
-            <form action="post">
+            <form action="/user/login" method="post">
                 <div>
                     <label>Username</label>
                     <input type="text" name="username">

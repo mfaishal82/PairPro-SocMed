@@ -3,4 +3,7 @@
     <a href="/user/home">Home</a>
     <a href="/user/profile/<%= UserId %>">Edit Profile</a>  
     <a href="/user/logout">Logout</a>
+    <% if (role == 'admin') { %>
+    <a href="/user/dashboard">Dashboard</a>
+    <% } %>
 </div>

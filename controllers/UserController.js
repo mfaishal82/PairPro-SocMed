@@ -1,5 +1,6 @@
-const { User, Post, Profile, Tag } = require('../models')
+const { User, Post, Profile, Tag , TagPost} = require('../models')
 const bcrypt = require('bcryptjs')
+const { Op } = require("sequelize");
 
 class UserController {
 
@@ -177,6 +178,64 @@ class UserController {
             const name = tagName
             await Tag.create({name});
             res.redirect('/user/home')
+        } catch (error) {
+            res.send(error)
+        }
+    }
+
+    static async dashboard(req, res) {
+        const UserId = req.session.UserId
+
+        try {
+            const userData = await User.findByPk(UserId)
+            const allUser = await User.findAll({
+                attributes: ["id", "username", "role"],
+                where: {
+                    role : {
+                        [Op.ne]: 'admin'
+                    }
+                },
+                include: {
+                    model: Profile,
+                    attributes: ["firstName","lastName"]
+                }
+            });
+            // res.send(allUser);
+            res.render('dashboard', {allUser, userData, UserId})
+        } catch (error) {
+            res.send(error)
+        }
+    }
+
+    static async deleteUser(req, res) {
+        const {UserId} = req.params
+        try {
+            const user = await User.findByPk(UserId);
+            if(!user){
+                throw new Error('User Not Found!!!')
+            }
+            // 1 hapus dari table Users
+            await user.destroy();
+            // 2 cek data dari table Profiles
+            const profile = await Profile.findOne({where:{UserId}})
+            if(profile){
+                await profile.destroy()
+            }
+
+            const posts = await Post.findAll({
+                where:{
+                    UserId
+                },
+                include: {
+                    model: TagPost
+                }
+            })
+
+            if(posts.length > 0){
+                await posts.destroy();
+            }
+            
+            res.redirect('/user/dashboard')
         } catch (error) {
             res.send(error)
         }

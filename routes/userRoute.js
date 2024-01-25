@@ -29,6 +29,7 @@ router.get('/logout', UserController.logout)
 router.post('/profile/edit/:ProfileId', UserController.editProfile)
 router.post('/tag', UserController.createTag);
 
-
+router.get('/dashboard', UserController.dashboard);
+router.get('/delete/:UserId', UserController.deleteUser);
 
 module.exports = router;

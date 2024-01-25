@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/dashboard.css">
+    <title>FactGuard</title>
+</head>
+<body>
+    <%- include('layout/nav-user', {role: userData.role, UserId}); %>
+    <div class="container">
+        <div class="title">
+            <h1>List User</h1>
+        </div>
+        <div class="list">
+            <table>
+                <tr>
+                    <th>Id</th>
+                    <th>Username</th>
+                    <th>Full Name</th>
+                    <th>Organization</th>
+                    <th>Action</th>
+                </tr>
+                <% allUser.forEach(el => { %>
+                <tr>
+                    <td><%= el.id %></td>
+                    <td><%= el.username %></td>
+                    <td><%= el.Profile != null ? el.Profile.fullName : '-' %></td>
+                    <td><%= el.role %></td>
+                    <td>
+                        <a href="/user/delete/<%= el.id %>">Delete</a>
+                    </td>
+                </tr>
+                <% }) %>
+            </table>
+        </div>
+    </div>
+</body>
+</html>

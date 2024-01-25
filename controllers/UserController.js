@@ -61,7 +61,9 @@ class UserController {
 
     static async home(req, res) {
         try {
-            res.render('home')
+            let id = req.session.UserId
+            console.log(id)
+            res.render('home', {id})
         } catch (error) {
             res.send(error)
         }
@@ -79,6 +81,31 @@ class UserController {
         } catch (error) {
             res.send(error)
 
+        }
+    }
+
+    static async profile(req, res) {
+        try {
+            let id = req.session.UserId
+            res.render('profile', {id})
+        } catch (error) {
+            res.send(error)
+        }
+    }
+
+    static async saveProfile(req, res) {
+        try {
+            let { firstName, lastName, dateOfBirth, hobby, gender, UserId } = req.body
+            console.log({ firstName, lastName, dateOfBirth, hobby, gender, UserId })
+            await User.create({firstName, lastName, dateOfBirth, hobby, gender, UserId}, {
+                where: {
+                    id
+                }
+            })
+            res.redirect('/user/home')
+        } catch (error) {
+            res.send(error.message)
+            console.log(error)
         }
     }
 

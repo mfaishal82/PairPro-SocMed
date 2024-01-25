@@ -2,9 +2,9 @@ const express = require('express');
 const router = express.Router();
 
 // import controller
-const HomeController = require('../controllers/HomeController');
+const IndexController = require('../controllers/IndexController');
 
-router.get('/', HomeController.landingPage)
+router.get('/', IndexController.landingPage)
 router.use('/user', require('./userRoute'))
 
 

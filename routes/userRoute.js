@@ -7,8 +7,10 @@ const UserController = require('../controllers/UserController');
 router.get('/login', UserController.login)
 router.post('/login', UserController.verify)
 
-router.get('register', UserController.register)
-router.post('register', UserController.saveNewUser)
+router.get('/register', UserController.register)
+router.post('/register', UserController.saveNewUser)
+
+router.get('/home', UserController.home)
 
 
 

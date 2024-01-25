@@ -2,7 +2,7 @@ class UserController {
 
     static async login(req, res) {
         try {
-            res.send('Ini Halaman Login')
+            res.render('login')
         } catch (error) {
             res.send(error)
         }
@@ -18,7 +18,7 @@ class UserController {
 
     static async register(req, res) {
         try {
-            res.send('Tempilkan Form Register')
+            res.render('register')
         } catch (error) {
             res.send(error)
         }
@@ -27,6 +27,14 @@ class UserController {
     static async saveNewUser(req, res) {
         try {
             res.send('Simpan User Baru')
+        } catch (error) {
+            res.send(error)
+        }
+    }
+
+    static async home(req, res) {
+        try {
+            res.render('home')
         } catch (error) {
             res.send(error)
         }

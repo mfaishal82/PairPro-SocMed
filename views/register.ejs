@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/register.css">
+    <title>FG-Register</title>
+</head>
+<body>
+    <%- include('layout/nav'); %>
+
+    <div class="container">
+        <div class="title">
+            <h1>Register</h1>
+        </div>
+        <div class="error-msg">
+            <% if (true) { %>
+                <p> Username is required, Email is required Password is required, </p>
+            <% } %>
+        </div>
+        <div class="form">
+            <form action="post">
+                <div>
+                    <label>Username</label>
+                    <input type="text" name="username">
+                </div>
+                <div>
+                    <label>Email</label>
+                    <input type="text" name="email">
+                </div>
+                <div>
+                    <label>Password</label>
+                   <input type="password" name="password">
+                </div>
+                <div class="btn-submit">
+                    <button type="submit">Register</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

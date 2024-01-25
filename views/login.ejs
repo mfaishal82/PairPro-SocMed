@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/login.css">
+    <title>FactGuard</title>
+</head>
+<body>
+    <%- include('layout/nav'); %>
+
+    <div class="container">
+        <div class="title">
+            <h1>Login</h1>
+        </div>
+        <div class="error-msg">
+            <% if (false) { %>
+                <p> Username is required, Email is required Password is required, </p>
+            <% } %>
+        </div>
+        <div class="form">
+            <form action="post">
+                <div>
+                    <label>Username</label>
+                    <input type="text" name="username">
+                </div>
+                <div>
+                    <label>Password</label>
+                   <input type="password" name="password">
+                </div>
+                <div class="btn-submit">
+                    <button type="submit">Login</button>
+                </div>
+            </form>
+        </div>
+
+        <div class="note">
+            <p>*if you dont have account please register <a href="/user/register">here</a></p>
+        </div>
+    </div>
+</body>
+</html>

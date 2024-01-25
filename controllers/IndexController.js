@@ -1,8 +1,8 @@
-class HomeController {
+class IndexController {
 
     static async landingPage(req, res) {
         try {
-            res.send('Ini Harusnya Landing page')
+            res.render('landing')
         } catch (error) {
             res.send(error);
         }
@@ -10,4 +10,4 @@ class HomeController {
 
 }
 
-module.exports = HomeController;
+module.exports = IndexController;

@@ -19,10 +19,8 @@ router.use(function (req, res, next) {
     next()
 })
 
-
 router.get('/home', UserController.home)
 router.get('/profile/:id', UserController.profile)
-
 router.get('/logout', UserController.logout)
 
 

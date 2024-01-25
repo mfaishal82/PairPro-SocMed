@@ -1,13 +1,12 @@
 const { User } = require('../models')
-const user = require('../models/user')
-const { use } = require('../routes')
 const bcrypt = require('bcryptjs')
 
 class UserController {
 
     static async login(req, res) {
+        let { error } = req.query 
+
         try {
-            let { error } = req.query            
             res.render('login', { error } )
         } catch (error) {
             res.send(error)
@@ -15,12 +14,11 @@ class UserController {
     }
 
     static async verify(req, res) {
+        let { username, password } = req.body
+
         try {
-            let { username, password } = req.body
             let user = await User.findOne({
-                where: {
-                    username
-                }
+                where: { username }
             })
 
             if(!user) {
@@ -28,15 +26,14 @@ class UserController {
             }
 
             let isVerified = bcrypt.compareSync(password, user.password)
+
             if(!isVerified) {
                 throw new Error('username or password incorrect')
             }
 
             req.session.UserId = user.id
-            console.log(req.session)
-
-
             res.redirect('/user/home')
+
         } catch (error) {
             let msg = error.message
             res.redirect(`/user/login?error=${msg}`)
@@ -52,8 +49,9 @@ class UserController {
     }
 
     static async saveNewUser(req, res) {
+        let { username, email, password} = req.body
+
         try {
-            let { username, email, password} = req.body
             await User.create({ username, email, password})
             res.redirect('/user/login')
         } catch (error) {
@@ -68,7 +66,6 @@ class UserController {
             res.send(error)
         }
     }
-
 
     static async logout(req, res) {
         try {

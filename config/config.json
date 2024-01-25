@@ -1,7 +1,7 @@
 {
   "development": {
     "username": "postgres",
-    "password": "0013",
+    "password": "postgres",
     "database": "Soc_Med_PP",
     "host": "127.0.0.1",
     "dialect": "postgres"

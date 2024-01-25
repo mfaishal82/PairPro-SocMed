@@ -14,35 +14,35 @@
             <h1>Edit Profile</h1>
         </div>
         <div class="form">
-            <form action="/user/profile/<%= UserId %>" method="post">
+            <form action="/user/profile/edit/<%= profile.id %>" method="post">
                 <table>
                     <tr>
                         <td><label>First Name</label></td>
-                        <td><input type="text" name="firstName" autocomplete="off"></td>
+                        <td><input type="text" name="firstName" value="<%= profile.firstName %>"></td>
                     </tr>
                     <tr>
                         <td><label>Last Name</label></td>
-                        <td><input type="text" name="lastName" autocomplete="off"></td>
+                        <td><input type="text" name="lastName" value="<%= profile.lastName %>" autocomplete="off"></td>
                     </tr>
                     <tr>
                         <td><label>Date Of Birth</label></td>
-                        <td><input type="date" name="dateOfBirth" autocomplete="off"></td>
+                        <td><input type="date" name="dateOfBirth" value="<%= profile.formatDOB %>" autocomplete="off"></td>
                     </tr>
                     <tr>
                         <td><label>Hobby</label></td>
-                        <td><input type="text" name="hobby" autocomplete="off"></td>
+                        <td><input type="text" name="hobby" value="<%= profile.hobby %>" autocomplete="off"></td>
                     </tr>
                     <tr>
                         <td><label>Gender</label></td>
-                        <td><input type="text" name="gender" autocomplete="off"></td>
+                        <td><input type="text" name="gender" value="<%= profile.gender %>" autocomplete="off"></td>
                     </tr>
                     <tr>
                         <td><label>Organization</label></td>
-                        <td><input type="text" name="organization" autocomplete="off"></td>
+                        <td><input type="text" name="organization" value="<%= profile.organization %>" autocomplete="off"></td>
                     </tr>
                 </table>
                 <div class="btn-submit">
-                    <button type="submit">Submit</button>
+                    <button type="submit">Update</button>
                 </div>
             </form>
         </div>

@@ -135,6 +135,27 @@ body {
     scale: 1.1;
 }
 
+.container .profile .createTag {
+    text-align: center;
+}
+
+.container .profile .createTag input {
+    padding: 3px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+.container .profile button{
+    padding: 3px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.container .profile button:hover{
+    scale: 1.1;
+    background-color: lightskyblue;
+}
+
 .container .post {
     grid-area: post;
     padding: 10px;

@@ -19,8 +19,15 @@ router.use(function (req, res, next) {
 })
 
 router.get('/home', UserController.home)
+
 router.post('/home', UserController.saveNewPost)
+
+router.get('/profile/:id', UserController.profile)
+router.post('/profile/:id', UserController.saveProfile)
+
 router.get('/logout', UserController.logout)
+router.post('/profile/edit/:ProfileId', UserController.editProfile)
+router.post('/tag', UserController.createTag);
 
 
 

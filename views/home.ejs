@@ -7,7 +7,7 @@
     <title>FactGuard</title>
 </head>
 <body>
-    <%- include('layout/nav-user', {name: 'greenpeace', role: 'user'}); %>
+    <%- include('layout/nav-user', {name: 'greenpeace', role: 'user', UserId}); %>
     <div class="container">
 
         <div class="form-post">
@@ -37,21 +37,32 @@
                 <h2>Account</h2>
             </div>
             <div class="user-profile">
-                <p>userId: </p>
-                <p>username: greenpeace</p>
-                <p>role: user</p>
+                <p>userId: <%= userData.id %> </p>
+                <p>username: <%= userData.username %></p>
+                <p>role: <%= userData.role %></p>
             </div>
 
+            <% if (profileData) { %>
             <div class="title">
                 <h2>Profile</h2>
             </div>
             <div>
-                <p>Name: </p>
-                <p>Birth: </p>
-                <p>Hobby: </p>
-                <p>Gender: </p>
-                <p>Organization: </p>
-                <p>Join FG: </p>
+                <p>Name: <%= profileData.fullName %></p>
+                <p>Birth: <%= profileData.formatedBirth() %> </p>
+                <p>Hobby: <%= profileData.hobby %></p>
+                <p>Gender: <%= profileData.gender %></p>
+                <p>Organization: <%= profileData.organization %> </p>
+                <p>Join FG: <%= profileData.formatedCreated() %> </p>
+            </div>
+            <% } %>
+            <div class="title">
+                <h2>Create Tag</h2>
+            </div>
+            <div class="createTag">
+                <form action="/user/tag" method="post">
+                    <input type="text" name="tagName"><br>
+                    <button type="submit">Add Tag</button>
+                </form>
             </div>
         </div>
         
@@ -68,6 +79,7 @@
                     <span>( Release : <%= el.formatLocalDate %> )</span>
                 </div>
                 <p><%= el.content %></p>
+                <p class="hastag">#Indonesia Maju</p>
             </div>
             <% }) %>
             <% } %>

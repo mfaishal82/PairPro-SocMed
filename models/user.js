@@ -15,6 +15,7 @@ module.exports = (sequelize, DataTypes) => {
       User.hasOne(models.Profile)
       User.hasMany(models.Post)
     }
+
   }
   User.init({
     username: {
@@ -41,7 +42,8 @@ module.exports = (sequelize, DataTypes) => {
         notNull: {msg: 'Password is required'},
         notEmpty: {msg: 'Password is required'}
       }
-    }
+    },
+    role: DataTypes.STRING,
   }, {
     sequelize,
     modelName: 'User',
@@ -50,6 +52,7 @@ module.exports = (sequelize, DataTypes) => {
         let salt = bcrypt.genSaltSync(8)
         let hash = bcrypt.hashSync(User.password, salt)
         User.password = hash
+        User.role = 'user'
       }
     }
   });

@@ -67,6 +67,11 @@
             <div class="title">
                 <h2>Create Tag</h2>
             </div>
+            <div style="text-align: center;">
+                <% if (errCreateTag) { %> 
+                    <p style="color: red;"><%= errCreateTag %></p>
+                <% } %>
+            </div>
             <div class="createTag">
                 <form action="/user/tag" method="post">
                     <input type="text" name="tagName"><br>

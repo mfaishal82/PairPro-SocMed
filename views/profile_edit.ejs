@@ -7,11 +7,16 @@
     <title>FactGuard</title>
 </head>
 <body>
-    <%- include('layout/nav-user', {name: 'greenpeace', role: 'user'}); %>
+    <%- include('layout/nav-user', {role: role}); %>
 
     <div class="container">
         <div class="title">
             <h1>Edit Profile</h1>
+        </div>
+        <div style="text-align: center;">
+            <% if (error) { %>
+                <p style="color: red;"><%= error %></p>
+            <% } %>
         </div>
         <div class="form">
             <form action="/user/profile/edit/<%= profile.id %>" method="post">

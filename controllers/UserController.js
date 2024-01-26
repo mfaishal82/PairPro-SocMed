@@ -2,6 +2,7 @@ const { User, Post, Profile, Tag, TagPost} = require('../models')
 
 const bcrypt = require('bcryptjs')
 const { Op } = require("sequelize");
+const { jsPDF } = require("jspdf");
 
 class UserController {
 
@@ -34,6 +35,8 @@ class UserController {
             }
 
             req.session.UserId = user.id
+            req.session.role = user.role
+
             res.redirect('/user/home')
 
         } catch (error) {
@@ -68,8 +71,9 @@ class UserController {
 
     static async home(req, res) {
         const UserId = req.session.UserId
-        const {error} = req.query;
+        const {error, errCreateTag} = req.query;
         try {
+            console.log(errCreateTag,'<<<<<<<')
             const userData = await User.findByPk(UserId)
             const tags = await Tag.findAll()
             // console.log(tags)
@@ -107,7 +111,7 @@ class UserController {
                 }
             })
 
-            res.render('home', {UserId, posts, error, userData, profileData, tags, listTag})
+            res.render('home', {UserId, posts, error, userData, profileData, tags, listTag, errCreateTag})
 
         } catch (error) {
             res.send(error)
@@ -140,8 +144,11 @@ class UserController {
                 },
                 attributes: ['id']
             })
-            await TagPost.create({TagId: TagId, PostId: post.id})
-            // console.log(post, TagId)
+
+            if(TagId){
+                await TagPost.create({TagId: TagId, PostId: post.id})
+            }
+
             res.redirect('/user/home')
         } catch (error) {
             if(error.name == 'SequelizeValidationError'){
@@ -154,8 +161,10 @@ class UserController {
     }
 
     static async profile(req, res) {
+        const {error} = req.query;
         try {
             let UserId = req.session.UserId
+            let role = req.session.role
             let profile = await Profile.findOne({
                 where: {
                     UserId
@@ -163,9 +172,9 @@ class UserController {
             })
             
             if(!profile) {
-                res.render('profile', {UserId, profile})
+                res.render('profile', {UserId, error, role})
             } else {
-                res.render('profile_edit', {UserId, profile})
+                res.render('profile_edit', {UserId, profile, error, role})
             }
 
         } catch (error) {
@@ -174,21 +183,25 @@ class UserController {
     }
 
     static async saveProfile(req, res) {
+        let UserId = req.session.UserId
         try {
-            let UserId = req.session.UserId
             let { firstName, lastName, dateOfBirth, hobby, gender, organization} = req.body
 
             await Profile.create({firstName, lastName, dateOfBirth, hobby, gender, UserId, organization})
             res.redirect('/user/home')
         } catch (error) {
-            res.send(error.message)
-
+            if(error.name == 'SequelizeValidationError'){
+                const msgErr = error.errors.map(err => err.message)
+                res.redirect(`/user/profile/${UserId}?error=${msgErr}`)
+            }else{
+                res.send(error)
+            }
         }
     }
 
     static async editProfile(req, res) {
+        let { ProfileId } = req.params
         try {
-            let { ProfileId } = req.params
             let { firstName, lastName, dateOfBirth, hobby, gender, organization} = req.body
             await Profile.update({ firstName, lastName, dateOfBirth, hobby, gender, organization}, {
                 where: {
@@ -198,7 +211,13 @@ class UserController {
 
             res.redirect('/user/home')
         } catch (error) {
-            res.send(error)
+            let UserId = req.session.UserId
+            if(error.name == 'SequelizeValidationError'){
+                const msgErr = error.errors.map(err => err.message)
+                res.redirect(`/user/profile/${UserId}?error=${msgErr}`)
+            }else{
+                res.send(error)
+            }
 
         }
     }
@@ -212,16 +231,22 @@ class UserController {
             await Tag.create({name});
             res.redirect('/user/home')
         } catch (error) {
-            res.send(error)
+            if(error.name == 'SequelizeValidationError'){
+                const msgErr = error.errors.map(err => err.message)
+                res.redirect(`/user/home?errCreateTag=${msgErr}`)
+            }else{
+                res.send(error)
+            }
         }
     }
 
     static async dashboard(req, res) {
         const UserId = req.session.UserId
+        const {userdel, search} = req.query
 
         try {
             const userData = await User.findByPk(UserId)
-            const allUser = await User.findAll({
+            let option = {
                 attributes: ["id", "username", "role"],
                 where: {
                     role : {
@@ -232,9 +257,16 @@ class UserController {
                     model: Profile,
                     attributes: ["firstName","lastName"]
                 }
-            });
+            }
+            if(search){
+                option.where.username = {
+                    [Op.iLike]: `%${search}%`
+                }
+            }
+            const allUser = await User.findAll(option);
+
             // res.send(allUser);
-            res.render('dashboard', {allUser, userData, UserId})
+            res.render('dashboard', {allUser, userData, UserId, userdel})
         } catch (error) {
             res.send(error)
         }
@@ -247,6 +279,8 @@ class UserController {
             if(!user){
                 throw new Error('User Not Found!!!')
             }
+            // ambil user name sebelum delete
+            const userName = user.dataValues.username;
             // 1 hapus dari table Users
             await user.destroy();
             // 2 cek data dari table Profiles
@@ -268,13 +302,14 @@ class UserController {
                 await posts.destroy();
             }
 
-            res.redirect('/user/dashboard')
+            res.redirect(`/user/dashboard?userdel=${userName}`)
         } catch (error) {
             res.send(error)
         }
     }
 
     static async addTag(req, res) {
+        // tambah tag kedalam postingan
         const { PostId } = req.params;
         const { TagId } = req.body;
         try {
@@ -282,6 +317,36 @@ class UserController {
             res.redirect('/user/home');
         } catch (error) {
             res.send(error);
+        }
+    }
+
+    static async cetak(req, res) {
+        try {
+            const allUser = await User.findAll({
+                attributes: ["id", "username", "role", "password"],
+                where: {
+                    role : {
+                        [Op.ne]: 'admin'
+                    }
+                },
+                include: {
+                    model: Profile,
+                    attributes: ["firstName","lastName"]
+                }
+            });
+            const doc = new jsPDF({
+                orientation: "landscape",
+            });
+            let space = 10
+            doc.text(`id -> username -> role -> hash`, 20, space);
+            allUser.forEach(el => {
+                space += 10
+                doc.text(`${ el.dataValues.id} -> ${ el.dataValues.username} -> ${ el.dataValues.role} -> ${ el.dataValues.password}`, 20, space);
+            });
+            doc.save("list-user.pdf"); // will save the file in the current working directory
+            res.redirect('/user/dashboard')
+        } catch (error) {
+            res.send(error)
         }
     }
 

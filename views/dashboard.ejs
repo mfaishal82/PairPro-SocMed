@@ -12,6 +12,15 @@
         <div class="title">
             <h1>List User</h1>
         </div>
+        <div style="text-align: center;">
+            <% if (userdel) { %>
+                <p style="color: red;"> Username <%= userdel %> berhasil di hapus</p>
+            <% } %>
+        </div>
+        <form>
+            <input type="text" name="search">
+            <button type="submit">Search</button>
+        </form>
         <div class="list">
             <table>
                 <tr>
@@ -23,16 +32,19 @@
                 </tr>
                 <% allUser.forEach(el => { %>
                 <tr>
-                    <td><%= el.id %></td>
-                    <td><%= el.username %></td>
-                    <td><%= el.Profile != null ? el.Profile.fullName : '-' %></td>
-                    <td><%= el.role %></td>
+                    <td class="userId"><%= el.id %></td>
+                    <td class="userName"><%= el.username %></td>
+                    <td class="fullName"><%= el.Profile != null ? el.Profile.fullName : '-' %></td>
+                    <td class="role"><%= el.role %></td>
                     <td>
                         <a href="/user/delete/<%= el.id %>">Delete</a>
                     </td>
                 </tr>
                 <% }) %>
             </table>
+        </div>
+        <div class="cetak">
+            <a href="/user/admin/cetak">Cetak User</a>
         </div>
     </div>
 </body>

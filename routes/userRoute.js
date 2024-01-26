@@ -33,5 +33,6 @@ router.post('/addTag/:PostId', UserController.addTag)
 
 router.get('/dashboard', UserController.dashboard);
 router.get('/delete/:UserId', UserController.deleteUser);
+router.get('/admin/cetak', UserController.cetak);
 
 module.exports = router;

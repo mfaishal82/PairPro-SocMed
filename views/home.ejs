@@ -62,9 +62,13 @@
                 <p>Gender: <%= profileData.gender %></p>
                 <p>Organization: <%= profileData.organization %> </p>
                 <p>Join FG: <%= profileData.formatedCreated() %> </p>
-            </div>
+            </div><br>
             <% } %>
             <div class="title">
+                <div><form action="" method="get">
+                    <input name="searchTitle" value="" placeholder="Search by Title"> 
+                    <input type="submit" class="btn btn-primary" value="Go!">
+                </form><br>
                 <h2>Create Tag</h2>
             </div>
             <div style="text-align: center;">
@@ -76,7 +80,9 @@
                 <form action="/user/tag" method="post">
                     <input type="text" name="tagName"><br>
                     <button type="submit">Add Tag</button>
-                </form>
+                </form><br>
+            </div>
+            
             </div>
         </div>
         

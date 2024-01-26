@@ -71,12 +71,24 @@ class UserController {
 
     static async home(req, res) {
         const UserId = req.session.UserId
+
         const {error, errCreateTag} = req.query;
+
+        const {searchTitle} = req.query;
+
         try {
             console.log(errCreateTag,'<<<<<<<')
             const userData = await User.findByPk(UserId)
             const tags = await Tag.findAll()
-            // console.log(tags)
+            let option = {
+                where: {}
+            }
+            if(searchTitle) {
+                option.where.title = {
+                    [Op.iLike] : `%${searchTitle}%`
+                }
+            }
+            console.log(option)
             const profileData = await Profile.findOne({
                 where: {
                     UserId
@@ -84,6 +96,7 @@ class UserController {
             })
             
             const posts = await Post.findAll({
+                option,
                 order: [["id", "DESC"]],
                 include:{
                     model: User
@@ -112,7 +125,6 @@ class UserController {
             })
 
             res.render('home', {UserId, posts, error, userData, profileData, tags, listTag, errCreateTag})
-
         } catch (error) {
             res.send(error)
         }

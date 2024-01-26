@@ -19,14 +19,6 @@ app.use(session({
 
 app.use(require('./routes'))  
 
-// app.get('/', (req, res) => {
-//   try {
-//     res.send('Okeee')
-//   } catch (error) {
-//     res.send(error)
-//   }
-// })
-
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
 })

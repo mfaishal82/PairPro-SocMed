@@ -57,9 +57,30 @@ module.exports = (sequelize, DataTypes) => {
       }
     },
     UserId: DataTypes.INTEGER,
-    hobby: DataTypes.STRING,
-    gender: DataTypes.STRING,
-    organization: DataTypes.STRING
+    hobby: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notEmpty: { msg: 'Hobby is required'},
+        notNull: { msg: 'Hobby is required'}
+      }
+    },
+    gender: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notEmpty: { msg: 'Gender is required'},
+        notNull: { msg: 'Gender is required'}
+      }
+    },
+    organization: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notEmpty: { msg: 'Organization is required'},
+        notNull: { msg: 'Organization is required'}
+      }
+    }
   }, {
     sequelize,
     modelName: 'Profile',

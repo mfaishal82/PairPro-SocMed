@@ -95,3 +95,43 @@ body {
 .container table a:hover {
     scale: 1.1;
 }
+
+.container .cetak {
+    margin-top: 10px;
+    text-align: center;
+}
+
+.container .cetak a {
+    display: inline-block;
+    background-color: white;
+    color: black;
+    font-weight: bold;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+.container .cetak a:hover {
+    background-color: lightskyblue;
+    scale: 1.1;
+}
+
+.container form {
+    text-align: center;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.container form input {
+    padding: 3px;
+    border-radius: 5px;
+}
+
+.container form button {
+    padding: 3px;
+    border-radius: 5px;
+}
+
+.container form button:hover {
+    background-color: lightskyblue;
+    scale: 1.1;
+}
